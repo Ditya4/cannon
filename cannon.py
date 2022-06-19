@@ -25,7 +25,7 @@ class Cannon:
             to mouse position
         """
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        print(mouse_x, mouse_y, " ", end="")
+        # print(mouse_x, mouse_y, " ", end="")
         first_point_first_vector_x = self.x
         first_point_first_vector_y = self.y
         second_point_first_vector_x = self.x + 1
@@ -51,13 +51,12 @@ class Cannon:
         return angle
 
     def draw_rect_angle(self, angle, rect):
-        print(self.color, self.red)
         target_rect = pygame.Rect(rect)
         shape_surf = pygame.Surface(target_rect.size, pygame.SRCALPHA)
         pygame.draw.rect(shape_surf, self.color, (0, 0, *target_rect.size))
         rotated_surf = pygame.transform.rotate(shape_surf, angle)
         self.surface.blit(rotated_surf,
-                          rotated_surf.get_rect(center=target_rect.center))
+                          rotated_surf.get_rect(center=(self.x, self.y)))
 
 
 def _find_angle(first_a_x, first_a_y, first_b_x, first_b_y,
