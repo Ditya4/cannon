@@ -1,5 +1,4 @@
 import pygame
-from math import sin, cos
 from random import randint
 import cannon as cannon_module
 import target as targets_module
@@ -75,8 +74,8 @@ def main():
         for target in targets:
             target.move()
             target.draw()
-        condition = pygame.mouse.get_pressed(3)[0]
-        if condition:
+        left_mouse_pressed = pygame.mouse.get_pressed(3)[0]
+        if left_mouse_pressed:
             charging_bullet = True
             if red + 10 <= 244:
                 red += 10
@@ -84,7 +83,12 @@ def main():
         else:
             if charging_bullet:
                 bullet_power = red // 10
-                coeficient = angle / (180 - angle)
+                # can't create a proper math model, take aproximately
+                if angle < 18:
+                    coeficient = angle / (90 - angle)
+                else:
+                    coeficient = angle / (180 - angle)
+
                 bullet_x_speed = bullet_power * coeficient
                 bullet_y_speed = bullet_power * (1 - coeficient)
                 print(angle, coeficient + coeficient, bullet_x_speed,
@@ -98,6 +102,10 @@ def main():
             cannon.color = cannon.default_color
             red = default_red
         for bullet in bullets:
+            for target in targets:
+                if target.check_collision(bullet):
+                    targets.remove(target)
+                    bullets.remove(bullet)
             bullet.move()
             bullet.draw()
 

@@ -1,5 +1,5 @@
 import pygame
-from math import acos, pi
+from math import acos, pi, atan, cos, sin
 
 
 class Cannon:
@@ -17,6 +17,17 @@ class Cannon:
         self.color = (red, 70, 70)
         self.default_color = (red, 70, 70)
         self.surface = surface
+
+    def calculate_angle_new(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        if mouse_x - self.x == 0:
+            angle = atan((mouse_y - self.y) / 0.00001)
+        else:
+            angle = atan((mouse_y - self.y) / (mouse_x - self.x))
+        print(angle)
+        return angle
+
+    
 
     def calculate_angle(self):
         """ first vector = {self.x, self.y; self.x + 50, self.y}
@@ -85,4 +96,4 @@ def _find_angle(first_a_x, first_a_y, first_b_x, first_b_y,
     alpha = alpha_in_radian * (180 / pi)
     # convert
     alpha = 90 - alpha
-    return alpha
+    return alpha # , alpha_in_radian

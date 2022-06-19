@@ -36,3 +36,10 @@ class Target:
     def draw(self):
         pygame.draw.circle(self.surface, self.color, (self.x, self.y),
                            self.radius)
+
+    def check_collision(self, bullet):
+        if (self.x - bullet.x) ** 2 + (self.y - bullet.y) ** 2 > (
+                                    self.radius + bullet.radius) ** 2:
+            return False
+        else:
+            return True
