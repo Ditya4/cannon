@@ -24,6 +24,7 @@ def main():
     '''
     targets = []
     target_count = 5
+    target_current_count = 0
     target_min_speed = -6
     target_max_speed = 6
     target_min_radius = 10
@@ -70,6 +71,25 @@ def main():
 
         cannon.calculate_angle()
         angle = cannon.draw_cannon()
+        if len(targets) == 0:
+            print(len(bullets))
+            # don't know why, but it removes only half of bullets at once ((
+            while bullets:
+                for bullet in bullets:
+                    bullets.remove(bullet)
+            print(len(bullets))
+            for unused_number in range(target_count):
+                # radius = randint(target_min_radius, target_max_radius)
+                targets.append(targets_module.Target(
+                             randint(left_top_border_x + radius,
+                                     right_bottom_border_x - radius),
+                             randint(left_top_border_y + radius,
+                                     right_bottom_border_y - radius),
+                             randint(target_min_speed, target_max_speed),
+                             randint(target_min_speed, target_max_speed),
+                             radius, target_color, left_top_border_x,
+                             left_top_border_y, right_bottom_border_x,
+                             right_bottom_border_y, surface))
 
         for target in targets:
             target.move()
@@ -106,6 +126,12 @@ def main():
                 if target.check_collision(bullet):
                     targets.remove(target)
                     bullets.remove(bullet)
+            if (-bullet.radius > bullet.x or
+                    bullet.x > WINDOW_WIDTH + bullet.radius or
+                    -bullet_radius > bullet.y or
+                    bullet.y > WINDOW_HEIGHT + bullet.radius):
+                bullets.remove(bullet)
+                print(len(bullets))
             bullet.move()
             bullet.draw()
 
